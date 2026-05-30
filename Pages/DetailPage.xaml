@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fooddrink.Pages.DetailPage"
+             Title="Food Details">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12">
+
+            <!-- Food Image -->
+            <Frame HeightRequest="220" CornerRadius="12" Padding="0" IsClippedToBounds="True"
+                   BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}">
+                <Image x:Name="FoodImage" Aspect="AspectFill"
+                       SemanticProperties.Description="Photo of the selected food item." />
+            </Frame>
+
+            <!-- Name, TTS & Favorite -->
+            <Grid ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                <Label x:Name="FoodName" FontSize="28" FontAttributes="Bold"
+                       TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                <Button Grid.Column="1" Text="🔊" FontSize="20"
+                        WidthRequest="50" HeightRequest="50" CornerRadius="25" Padding="0"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}"
+                        Clicked="OnSpeakClicked"
+                        SemanticProperties.Hint="Read all food information aloud" />
+                <Button x:Name="BtnFavorite" Grid.Column="2" Text="♡" FontSize="28"
+                        WidthRequest="50" HeightRequest="50" CornerRadius="25"
+                        Padding="0" Clicked="OnFavoriteClicked"
+                        SemanticProperties.Hint="Tap to add or remove from favorites" />
+            </Grid>
+
+            <Label x:Name="FoodCategory" FontSize="14"
+                   TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+
+            <!-- Nutrition Grid -->
+            <Frame Padding="12" CornerRadius="10"
+                   BackgroundColor="{AppThemeBinding Light=#f8f8f8, Dark=#1f1f1f}">
+                <Grid ColumnDefinitions="*,*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="4">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Calories" FontSize="11" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Protein" FontSize="11" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="0" Grid.Column="2" Text="Carbs" FontSize="11" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="0" Grid.Column="3" Text="Fat" FontSize="11" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label x:Name="NutritionCal" Grid.Row="1" Grid.Column="0"
+                           FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}" />
+                    <Label x:Name="NutritionProtein" Grid.Row="1" Grid.Column="1"
+                           FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                    <Label x:Name="NutritionCarbs" Grid.Row="1" Grid.Column="2"
+                           FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                    <Label x:Name="NutritionFat" Grid.Row="1" Grid.Column="3"
+                           FontSize="18" FontAttributes="Bold" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                </Grid>
+            </Frame>
+
+            <!-- Description -->
+            <Label Text="Description" FontSize="16" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+            <Label x:Name="FoodDescription" FontSize="14"
+                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+
+            <!-- Ingredients -->
+            <Label Text="Ingredients" FontSize="16" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+            <Label x:Name="FoodIngredients" FontSize="14"
+                   TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

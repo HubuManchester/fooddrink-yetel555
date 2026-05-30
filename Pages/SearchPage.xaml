@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fooddrink.Pages.SearchPage"
+             Title="Search &amp; Scan">
+
+    <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
+
+        <!-- Search Bar with Voice -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto" ColumnSpacing="8">
+            <Entry x:Name="SearchEntry" Placeholder="Search food by name, ingredient..."
+                   ReturnType="Search"
+                   Completed="OnSearchCompleted"
+                   SemanticProperties.Hint="Enter keywords to search for food items" />
+            <Button Grid.Column="1" Text="🎤" Clicked="OnVoiceSearch" WidthRequest="50" HeightRequest="50"
+                    SemanticProperties.Hint="Search by voice input"
+                    BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}" />
+        </Grid>
+
+        <!-- Search Results -->
+        <CollectionView Grid.Row="1" x:Name="SearchResultsCollection"
+                        SelectionMode="Single"
+                        SelectionChanged="OnResultSelected">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Margin="0,4" Padding="12" CornerRadius="10" HasShadow="True"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#2a2a2a}">
+                        <Grid ColumnDefinitions="60,*" ColumnSpacing="10">
+                            <Frame Grid.Column="0" WidthRequest="60" HeightRequest="60"
+                                   CornerRadius="6" Padding="0" IsClippedToBounds="True"
+                                   BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}">
+                                <Image Source="{Binding ImageUrl}" Aspect="AspectFill" />
+                            </Frame>
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding Name}" FontSize="15" FontAttributes="Bold" />
+                                <Label Text="{Binding Category}" FontSize="12"
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                            </VerticalStackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20">
+                    <Label Text="Search results will appear here."
+                           FontSize="16" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,57 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|c:\\users\\asus\\desktop\\yi dong\\fooddrink\\fooddrink.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|solutionrelative:fooddrink.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Fooddrink",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Fooddrink.csproj",
+              "RelativeDocumentMoniker": "Fooddrink.csproj",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Fooddrink.csproj",
+              "RelativeToolTip": "Fooddrink.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-30T17:44:53.8Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

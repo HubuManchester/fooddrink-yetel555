@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fooddrink.Pages.FavoritesPage"
+             Title="My Favorites">
+
+    <Grid RowDefinitions="*" Padding="16">
+        <CollectionView x:Name="FavoritesCollection"
+                        SelectionMode="Single"
+                        SelectionChanged="OnFavoriteSelected"
+                        SemanticProperties.Description="Your favorite food items. Tap to view details.">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems>
+                                <SwipeItem Text="Remove"
+                                           BackgroundColor="Red"
+                                           Invoked="OnRemoveFavorite"
+                                           CommandParameter="{Binding Id}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Frame Margin="0,4" Padding="12" CornerRadius="10" HasShadow="True"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#2a2a2a}">
+                            <Grid ColumnDefinitions="60,*" ColumnSpacing="10">
+                                <Frame Grid.Column="0" WidthRequest="60" HeightRequest="60"
+                                       CornerRadius="6" Padding="0" IsClippedToBounds="True"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}">
+                                    <Image Source="{Binding ImageUrl}" Aspect="AspectFill" />
+                                </Frame>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Name}" FontSize="15" FontAttributes="Bold" />
+                                    <Label Text="{Binding Category}" FontSize="12"
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                                    <Label FontSize="11"
+                                           TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}">
+                                        <Label.Text>
+                                            <MultiBinding StringFormat="{}{0:F0} kcal | {1:F0}g protein">
+                                                <Binding Path="Calories" />
+                                                <Binding Path="Protein" />
+                                            </MultiBinding>
+                                        </Label.Text>
+                                    </Label>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <CollectionView.EmptyView>
+                <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20">
+                    <Label Text="No favorites yet. Tap ♥ on any food to add it here!"
+                           FontSize="16" HorizontalOptions="Center" HorizontalTextAlignment="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+        </CollectionView>
+    </Grid>
+</ContentPage>

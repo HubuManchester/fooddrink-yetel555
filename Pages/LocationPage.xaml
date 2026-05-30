@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fooddrink.Pages.LocationPage"
+             Title="Location">
+
+    <VerticalStackLayout Padding="20" Spacing="16" VerticalOptions="Center">
+
+        <Label Text="GPS Location"
+               FontSize="24" FontAttributes="Bold" HorizontalOptions="Center"
+               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+        <Label Text="Get your current geographic coordinates. Useful for finding local food recommendations!"
+               FontSize="14" HorizontalTextAlignment="Center"
+               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}" />
+
+        <!-- Location Card -->
+        <Frame Padding="20" CornerRadius="16" HasShadow="True"
+               BackgroundColor="{AppThemeBinding Light=#f0f0ff, Dark=#1a1a2e}">
+            <VerticalStackLayout Spacing="12" HorizontalOptions="Center">
+                <Label x:Name="LocationStatus" FontSize="14" HorizontalOptions="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}" />
+
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="24" RowSpacing="8">
+                    <Label Grid.Row="0" Grid.Column="0" Text="Latitude" FontSize="13" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Longitude" FontSize="13" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+
+                    <Label x:Name="LatitudeLabel" Grid.Row="1" Grid.Column="0"
+                           FontSize="30" FontAttributes="Bold" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}" />
+                    <Label x:Name="LongitudeLabel" Grid.Row="1" Grid.Column="1"
+                           FontSize="30" FontAttributes="Bold" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}" />
+                </Grid>
+
+                <Label x:Name="LocationTip" FontSize="13" HorizontalTextAlignment="Center"
+                       TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+            </VerticalStackLayout>
+        </Frame>
+
+        <Button Text="Get Current Location" Clicked="OnGetLocation" HorizontalOptions="Center" WidthRequest="220"
+                SemanticProperties.Hint="Retrieve your current GPS coordinates" />
+
+        <Button Text="Start Continuous Tracking" Clicked="OnStartTracking" HorizontalOptions="Center" WidthRequest="220"
+                BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}"
+                SemanticProperties.Hint="Continuously monitor your location" />
+    </VerticalStackLayout>
+</ContentPage>

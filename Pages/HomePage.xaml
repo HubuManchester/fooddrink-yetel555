@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fooddrink.Pages.HomePage"
+             Title="Food &amp; Drink">
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="16">
+
+        <!-- ====== Recommended Section ====== -->
+        <VerticalStackLayout Grid.Row="0" Spacing="4" Padding="0,0,0,8">
+            <Label Text="⭐ Recommended for You"
+                   FontSize="20" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+            <Label x:Name="RecommendHint"
+                   Text="Shake your phone to discover new dishes!"
+                   FontSize="12"
+                   TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+
+            <Frame x:Name="RecommendCard" Padding="0" CornerRadius="14" HasShadow="True"
+                   HeightRequest="180" IsClippedToBounds="True"
+                   BackgroundColor="{AppThemeBinding Light=#fff5f0, Dark=#2a1a10}">
+                <Frame.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="OnRecommendTapped" />
+                </Frame.GestureRecognizers>
+                <Grid ColumnDefinitions="150,*" ColumnSpacing="0">
+                    <!-- Recommended Image -->
+                    <Image x:Name="RecommendImage" Aspect="AspectFill"
+                           SemanticProperties.Description="Recommended dish image" />
+
+                    <!-- Recommended Info -->
+                    <VerticalStackLayout Grid.Column="1" Padding="14" VerticalOptions="Center" Spacing="6">
+                        <Label x:Name="RecommendName" FontSize="20" FontAttributes="Bold"
+                               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                        <Label x:Name="RecommendCategory" FontSize="13"
+                               TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}" />
+                        <Label x:Name="RecommendCalories" FontSize="14"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}" />
+                        <Label x:Name="RecommendDesc" FontSize="11" MaxLines="2" LineBreakMode="TailTruncation"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray400}}" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Frame>
+        </VerticalStackLayout>
+
+        <!-- ====== Category Filter ====== -->
+        <ScrollView Grid.Row="1" Orientation="Horizontal" HorizontalScrollBarVisibility="Never"
+                    Padding="0,4,0,8">
+            <HorizontalStackLayout Spacing="8">
+                <Button x:Name="BtnAll" Text="All" Clicked="OnCategoryClicked" WidthRequest="70"
+                        BackgroundColor="{AppThemeBinding Light={StaticResource Primary}, Dark={StaticResource PrimaryDark}}" />
+                <Button x:Name="BtnChinese" Text="Chinese" Clicked="OnCategoryClicked" WidthRequest="80" />
+                <Button x:Name="BtnItalian" Text="Italian" Clicked="OnCategoryClicked" WidthRequest="80" />
+                <Button x:Name="BtnJapanese" Text="Japanese" Clicked="OnCategoryClicked" WidthRequest="90" />
+                <Button x:Name="BtnThai" Text="Thai" Clicked="OnCategoryClicked" WidthRequest="70" />
+                <Button x:Name="BtnIndian" Text="Indian" Clicked="OnCategoryClicked" WidthRequest="80" />
+                <Button x:Name="BtnFrench" Text="French" Clicked="OnCategoryClicked" WidthRequest="80" />
+                <Button x:Name="BtnMexican" Text="Mexican" Clicked="OnCategoryClicked" WidthRequest="85" />
+                <Button x:Name="BtnVietnamese" Text="Vietnamese" Clicked="OnCategoryClicked" WidthRequest="100" />
+            </HorizontalStackLayout>
+        </ScrollView>
+
+        <!-- ====== Section Title ====== -->
+        <Label Grid.Row="2" Text="All Dishes"
+               FontSize="18" FontAttributes="Bold" Padding="0,8,0,4"
+               TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+        <!-- ====== Food List ====== -->
+        <RefreshView Grid.Row="3" x:Name="foodRefreshView" Refreshing="OnRefreshing">
+            <CollectionView x:Name="FoodCollectionView"
+                            SemanticProperties.Description="Browse all food items.">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,4" Padding="12" CornerRadius="10" HasShadow="True"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#2a2a2a}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnFoodTapped" CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="80,*" ColumnSpacing="12">
+                                <Frame Grid.Column="0" WidthRequest="80" HeightRequest="80"
+                                       CornerRadius="8" Padding="0" IsClippedToBounds="True"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}">
+                                    <Image Source="{Binding ImageUrl}"
+                                           Aspect="AspectFill"
+                                           SemanticProperties.Description="{Binding Name, StringFormat='Image of {0}'}" />
+                                </Frame>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                                    <Label Text="{Binding Name}"
+                                           FontSize="16" FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                                    <Label Text="{Binding Category, StringFormat='Category: {0}'}"
+                                           FontSize="12"
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                                    <Label Text="{Binding Description}"
+                                           FontSize="11" MaxLines="2" LineBreakMode="TailTruncation"
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                                    <HorizontalStackLayout Spacing="12">
+                                        <Label FontSize="11"
+                                               TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0} kcal">
+                                                    <Binding Path="Calories" />
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label Text="{Binding Protein, StringFormat='Protein: {0}g'}"
+                                               FontSize="11"
+                                               TextColor="{AppThemeBinding Light={StaticResource Gray600}, Dark={StaticResource Gray300}}" />
+                                    </HorizontalStackLayout>
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Padding="20">
+                        <Label Text="No food items found."
+                               FontSize="16" HorizontalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    </VerticalStackLayout>
+                </CollectionView.EmptyView>
+            </CollectionView>
+        </RefreshView>
+    </Grid>
+</ContentPage>

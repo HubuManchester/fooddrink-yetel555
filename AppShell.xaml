@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Fooddrink.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Fooddrink.Pages"
+    Shell.FlyoutBehavior="Disabled"
+    Title="Food &amp; Drink">
+
+    <TabBar>
+        <ShellContent
+            Title="Home"
+            ContentTemplate="{DataTemplate pages:HomePage}"
+            Route="HomePage" />
+
+        <ShellContent
+            Title="Search"
+            ContentTemplate="{DataTemplate pages:SearchPage}"
+            Route="SearchPage" />
+
+        <ShellContent
+            Title="Favorites"
+            ContentTemplate="{DataTemplate pages:FavoritesPage}"
+            Route="FavoritesPage" />
+
+        <ShellContent
+            Title="Camera"
+            ContentTemplate="{DataTemplate pages:CameraPage}"
+            Route="CameraPage" />
+
+        <ShellContent
+            Title="Location"
+            ContentTemplate="{DataTemplate pages:LocationPage}"
+            Route="LocationPage" />
+    </TabBar>
+
+</Shell>
