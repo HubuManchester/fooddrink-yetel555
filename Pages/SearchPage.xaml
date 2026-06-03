@@ -19,12 +19,14 @@
 
         <!-- Search Results -->
         <CollectionView Grid.Row="1" x:Name="SearchResultsCollection"
-                        SelectionMode="Single"
-                        SelectionChanged="OnResultSelected">
+                        SemanticProperties.Description="Search results">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame Margin="0,4" Padding="12" CornerRadius="10" HasShadow="True"
                            BackgroundColor="{AppThemeBinding Light=White, Dark=#2a2a2a}">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Tapped="OnResultTapped" CommandParameter="{Binding .}" />
+                        </Frame.GestureRecognizers>
                         <Grid ColumnDefinitions="60,*" ColumnSpacing="10">
                             <Frame Grid.Column="0" WidthRequest="60" HeightRequest="60"
                                    CornerRadius="6" Padding="0" IsClippedToBounds="True"

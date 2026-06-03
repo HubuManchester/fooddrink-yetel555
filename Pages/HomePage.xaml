@@ -89,10 +89,25 @@
                                            TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
                                     <Label Text="{Binding Category, StringFormat='Category: {0}'}"
                                            FontSize="12"
-                                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
-                                    <Label Text="{Binding Description}"
-                                           FontSize="11" MaxLines="2" LineBreakMode="TailTruncation"
-                                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                                           TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}" />
+                                    <Label FontSize="11" LineBreakMode="TailTruncation"
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Ingredients: " FontAttributes="Bold" />
+                                                <Span Text="{Binding Ingredients}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label FontSize="11" MaxLines="1" LineBreakMode="TailTruncation"
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Method: " FontAttributes="Bold" />
+                                                <Span Text="{Binding CookingMethod}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
                                     <HorizontalStackLayout Spacing="12">
                                         <Label FontSize="11"
                                                TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}">

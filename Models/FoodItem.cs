@@ -17,6 +17,8 @@ public class FoodItem
     public string ImageUrl { get; set; } = string.Empty;
     [MaxLength(500)]
     public string Ingredients { get; set; } = string.Empty;
+    [MaxLength(300)]
+    public string CookingMethod { get; set; } = string.Empty;
     public double Calories { get; set; }
     public double Protein { get; set; }
     public double Carbs { get; set; }

@@ -19,11 +19,6 @@
             Route="SearchPage" />
 
         <ShellContent
-            Title="Favorites"
-            ContentTemplate="{DataTemplate pages:FavoritesPage}"
-            Route="FavoritesPage" />
-
-        <ShellContent
             Title="Camera"
             ContentTemplate="{DataTemplate pages:CameraPage}"
             Route="CameraPage" />
@@ -32,6 +27,11 @@
             Title="Location"
             ContentTemplate="{DataTemplate pages:LocationPage}"
             Route="LocationPage" />
+
+        <ShellContent
+            Title="Profile"
+            ContentTemplate="{DataTemplate pages:ProfilePage}"
+            Route="ProfilePage" />
     </TabBar>
 
 </Shell>

@@ -8,6 +8,8 @@ public partial class DetailPage : ContentPage
 {
     private readonly DatabaseService _db;
     private readonly HardwareService _hardware;
+    private readonly SettingsService _settings;
+    private readonly JsonStorageService _json;
     private FoodItem? _foodItem;
 
     public FoodItem? FoodItem
@@ -21,11 +23,38 @@ public partial class DetailPage : ContentPage
         }
     }
 
-    public DetailPage(DatabaseService db, HardwareService hardware)
+    public DetailPage(DatabaseService db, HardwareService hardware, SettingsService settings, JsonStorageService json)
     {
         InitializeComponent();
         _db = db;
         _hardware = hardware;
+        _settings = settings;
+        _json = json;
+    }
+
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+        _settings.FontScaleChanged += OnFontScaleChanged;
+        if (_foodItem is not null)
+        {
+            FontScalingHelper.ApplyScale(this, _settings.FontScale);
+            await _json.AddRecentViewAsync(_foodItem.Id, _foodItem.Name);
+        }
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _settings.FontScaleChanged -= OnFontScaleChanged;
+    }
+
+    private void OnFontScaleChanged(object? sender, double scale)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            FontScalingHelper.ApplyScale(this, scale);
+        });
     }
 
     private void PopulateUI(FoodItem item)
@@ -34,6 +63,7 @@ public partial class DetailPage : ContentPage
         FoodCategory.Text = $"Category: {item.Category}";
         FoodDescription.Text = item.Description;
         FoodIngredients.Text = item.Ingredients;
+        FoodCookingMethod.Text = item.CookingMethod;
         NutritionCal.Text = $"{item.Calories:F0}";
         NutritionProtein.Text = $"{item.Protein:F0}g";
         NutritionCarbs.Text = $"{item.Carbs:F0}g";
@@ -44,40 +74,6 @@ public partial class DetailPage : ContentPage
         FoodImage.Source = item.ImageUrl;
 
         SemanticScreenReader.Announce($"Showing details for {item.Name}");
-    }
-
-    private async void OnSpeakClicked(object? sender, EventArgs e)
-    {
-        if (_foodItem is null) return;
-
-        try
-        {
-            // Check if TTS engine is available
-            var locales = await TextToSpeech.Default.GetLocalesAsync();
-            if (locales is null || !locales.Any())
-            {
-                await DisplayAlert("Text-to-Speech",
-                    "No text-to-speech engine found. Please install 'Google Text-to-Speech' from the Play Store.", "OK");
-                return;
-            }
-
-            _hardware.TriggerHapticFeedback();
-
-            var ttsText = $"{_foodItem.Name}. It is a {_foodItem.Category} dish. " +
-                          $"Calories: {_foodItem.Calories:F0} kilocalories. " +
-                          $"Protein: {_foodItem.Protein:F0} grams. " +
-                          $"Carbs: {_foodItem.Carbs:F0} grams. " +
-                          $"Fat: {_foodItem.Fat:F0} grams. " +
-                          $"Ingredients: {_foodItem.Ingredients}. " +
-                          $"{_foodItem.Description}";
-
-            await TextToSpeech.Default.SpeakAsync(ttsText);
-        }
-        catch (Exception)
-        {
-            await DisplayAlert("Text-to-Speech",
-                "TTS engine failed. Install 'Google Text-to-Speech' from the Play Store to enable this feature.", "OK");
-        }
     }
 
     private async void OnFavoriteClicked(object? sender, EventArgs e)

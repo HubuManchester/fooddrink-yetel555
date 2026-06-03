@@ -5,24 +5,34 @@ namespace Fooddrink.Pages;
 public partial class LocationPage : ContentPage
 {
     private readonly HardwareService _hardware;
+    private readonly SettingsService _settings;
     private CancellationTokenSource? _trackCts;
 
-    public LocationPage(HardwareService hardware)
+    public LocationPage(HardwareService hardware, SettingsService settings)
     {
         InitializeComponent();
         _hardware = hardware;
+        _settings = settings;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        _settings.FontScaleChanged += OnFontScaleChanged;
+        FontScalingHelper.ApplyScale(this, _settings.FontScale);
         await CheckLocationStatus();
     }
 
     protected override void OnDisappearing()
     {
         base.OnDisappearing();
+        _settings.FontScaleChanged -= OnFontScaleChanged;
         StopTracking();
+    }
+
+    private void OnFontScaleChanged(object? sender, double scale)
+    {
+        MainThread.BeginInvokeOnMainThread(() => FontScalingHelper.ApplyScale(this, scale));
     }
 
     private async Task CheckLocationStatus()

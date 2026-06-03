@@ -51,17 +51,53 @@ public class HardwareService
         }
     }
 
-    public string GetFlashStatus()
+    private bool _isFlashOn;
+
+    public Task<(bool Success, string Message)> ToggleFlashlightAsync(bool turnOn)
     {
         try
         {
-            return "Flash is ready for camera use.";
+#if ANDROID
+            if (Android.OS.Build.VERSION.SdkInt < Android.OS.BuildVersionCodes.M)
+                return Task.FromResult((false, "Flashlight requires Android 6.0 or higher."));
+
+            var context = Android.App.Application.Context;
+            var cameraManager = (Android.Hardware.Camera2.CameraManager)
+                context.GetSystemService(Android.Content.Context.CameraService)!;
+
+            var cameraId = cameraManager.GetCameraIdList().FirstOrDefault(c =>
+            {
+                var obj = cameraManager.GetCameraCharacteristics(c)
+                    .Get(Android.Hardware.Camera2.CameraCharacteristics.LensFacing);
+                return obj is Java.Lang.Integer ji && ji.IntValue() == (int)Android.Hardware.Camera2.LensFacing.Back;
+            });
+
+            if (cameraId is null)
+                return Task.FromResult((false, "No back camera with flash found on this device."));
+
+            var flashObj = cameraManager.GetCameraCharacteristics(cameraId)
+                .Get(Android.Hardware.Camera2.CameraCharacteristics.FlashInfoAvailable);
+            var hasFlash = flashObj is Java.Lang.Boolean jb && jb.BooleanValue();
+            if (!hasFlash)
+                return Task.FromResult((false, "This device does not have a camera flash."));
+
+#pragma warning disable CA1416
+            cameraManager.SetTorchMode(cameraId, turnOn);
+#pragma warning restore CA1416
+            _isFlashOn = turnOn;
+            return Task.FromResult((true, turnOn ? "Flashlight is ON" : "Flashlight is OFF"));
+#else
+            return Task.FromResult((false, "Flashlight control is only available on Android devices."));
+#endif
         }
         catch (Exception ex)
         {
-            return $"Flash is not available: {ex.Message}";
+            _isFlashOn = false;
+            return Task.FromResult((false, $"Flashlight error: {ex.Message}"));
         }
     }
+
+    public bool IsFlashOn => _isFlashOn;
 
     public string GetVibrationStatus()
     {
@@ -102,6 +138,8 @@ public class HardwareService
         }
     }
 
+    private EventHandler<AccelerometerChangedEventArgs>? _shakeHandler;
+
     public void StartShakeDetection(Action onShake)
     {
         try
@@ -110,7 +148,15 @@ public class HardwareService
                 return;
 
             const double shakeThreshold = 1.2;
-            Accelerometer.Default.ReadingChanged += (s, e) =>
+            const int shakesRequired = 3;
+            const int cooldownMs = 400;
+            const int resetWindowMs = 2500;
+
+            int shakeCount = 0;
+            DateTime lastShakeTime = DateTime.MinValue;
+            DateTime firstShakeTime = DateTime.MinValue;
+
+            _shakeHandler = (s, e) =>
             {
                 var magnitude = Math.Sqrt(
                     e.Reading.Acceleration.X * e.Reading.Acceleration.X +
@@ -118,8 +164,38 @@ public class HardwareService
                     e.Reading.Acceleration.Z * e.Reading.Acceleration.Z);
 
                 if (magnitude > shakeThreshold)
-                    MainThread.BeginInvokeOnMainThread(onShake);
+                {
+                    var now = DateTime.UtcNow;
+
+                    // Reset if too long since first shake
+                    if (firstShakeTime != DateTime.MinValue &&
+                        (now - firstShakeTime).TotalMilliseconds > resetWindowMs)
+                    {
+                        shakeCount = 0;
+                        firstShakeTime = DateTime.MinValue;
+                    }
+
+                    // Cooldown between individual shakes
+                    if (lastShakeTime != DateTime.MinValue &&
+                        (now - lastShakeTime).TotalMilliseconds < cooldownMs)
+                        return;
+
+                    shakeCount++;
+                    lastShakeTime = now;
+
+                    if (firstShakeTime == DateTime.MinValue)
+                        firstShakeTime = now;
+
+                    if (shakeCount >= shakesRequired)
+                    {
+                        shakeCount = 0;
+                        firstShakeTime = DateTime.MinValue;
+                        MainThread.BeginInvokeOnMainThread(onShake);
+                    }
+                }
             };
+
+            Accelerometer.Default.ReadingChanged += _shakeHandler;
             Accelerometer.Default.Start(SensorSpeed.UI);
         }
         catch (Exception)
@@ -133,7 +209,12 @@ public class HardwareService
         try
         {
             if (Accelerometer.Default.IsSupported && Accelerometer.Default.IsMonitoring)
+            {
+                if (_shakeHandler is not null)
+                    Accelerometer.Default.ReadingChanged -= _shakeHandler;
                 Accelerometer.Default.Stop();
+                _shakeHandler = null;
+            }
         }
         catch { }
     }

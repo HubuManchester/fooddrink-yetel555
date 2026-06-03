@@ -7,25 +7,28 @@ public partial class HomePage : ContentPage
 {
     private readonly DatabaseService _db;
     private readonly HardwareService _hardware;
+    private readonly SettingsService _settings;
     private List<FoodItem> _allItems = [];
     private FoodItem? _recommendedItem;
     private string _currentCategory = "All";
     private bool _isShaking;
     private static readonly Random _rng = new();
 
-    public HomePage(DatabaseService db, HardwareService hardware)
+    public HomePage(DatabaseService db, HardwareService hardware, SettingsService settings)
     {
         InitializeComponent();
         _db = db;
         _hardware = hardware;
+        _settings = settings;
     }
 
     protected override async void OnAppearing()
     {
         base.OnAppearing();
+        _settings.FontScaleChanged += OnFontScaleChanged;
+        FontScalingHelper.ApplyScale(this, _settings.FontScale);
         await LoadItemsAsync(null);
 
-        // Set initial recommended: first item
         if (_allItems.Count > 0)
             SetRecommended(_allItems[0]);
 
@@ -36,6 +39,19 @@ public partial class HomePage : ContentPage
     {
         base.OnDisappearing();
         _hardware.StopShakeDetection();
+        _settings.FontScaleChanged -= OnFontScaleChanged;
+    }
+
+    private void OnFontScaleChanged(object? sender, double scale)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            FontScalingHelper.ApplyScale(this, scale);
+            if (_recommendedItem is not null)
+                SetRecommended(_recommendedItem);
+            FoodCollectionView.ItemsSource = null;
+            FoodCollectionView.ItemsSource = _allItems;
+        });
     }
 
     private async Task LoadItemsAsync(string? category)
@@ -48,6 +64,10 @@ public partial class HomePage : ContentPage
 
             FoodCollectionView.ItemsSource = null;
             FoodCollectionView.ItemsSource = _allItems;
+
+            // Delay to let CollectionView create items, then scale them
+            await Task.Delay(100);
+            FontScalingHelper.ApplyScale(this, _settings.FontScale);
         }
         catch (Exception ex)
         {

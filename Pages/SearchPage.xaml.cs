@@ -8,14 +8,37 @@ public partial class SearchPage : ContentPage
 {
     private readonly DatabaseService _db;
     private readonly HardwareService _hardware;
+    private readonly SettingsService _settings;
     private readonly ObservableCollection<FoodItem> _searchResults = [];
 
-    public SearchPage(DatabaseService db, HardwareService hardware)
+    public SearchPage(DatabaseService db, HardwareService hardware, SettingsService settings)
     {
         InitializeComponent();
         _db = db;
         _hardware = hardware;
+        _settings = settings;
         SearchResultsCollection.ItemsSource = _searchResults;
+    }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        _settings.FontScaleChanged += OnFontScaleChanged;
+        FontScalingHelper.ApplyScale(this, _settings.FontScale);
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _settings.FontScaleChanged -= OnFontScaleChanged;
+    }
+
+    private void OnFontScaleChanged(object? sender, double scale)
+    {
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            FontScalingHelper.ApplyScale(this, scale);
+        });
     }
 
     private async void OnSearchCompleted(object? sender, EventArgs e)
@@ -75,11 +98,10 @@ public partial class SearchPage : ContentPage
         }
     }
 
-    private async void OnResultSelected(object? sender, SelectionChangedEventArgs e)
+    private async void OnResultTapped(object? sender, TappedEventArgs e)
     {
-        if (e.CurrentSelection.FirstOrDefault() is not FoodItem item) return;
+        if (e.Parameter is not FoodItem item) return;
 
-        SearchResultsCollection.SelectedItem = null;
         try { _hardware.TriggerHapticFeedback(); } catch { }
 
         await Shell.Current.GoToAsync(nameof(DetailPage), true,

@@ -5,24 +5,78 @@ namespace Fooddrink.Pages;
 public partial class CameraPage : ContentPage
 {
     private readonly HardwareService _hardware;
+    private readonly SettingsService _settings;
 
-    public CameraPage(HardwareService hardware)
+    public CameraPage(HardwareService hardware, SettingsService settings)
     {
         InitializeComponent();
         _hardware = hardware;
+        _settings = settings;
     }
 
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        FlashStatus.Text = "Checking flash...";
+        _settings.FontScaleChanged += OnFontScaleChanged;
+        FontScalingHelper.ApplyScale(this, _settings.FontScale);
+        UpdateFlashUI();
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        _settings.FontScaleChanged -= OnFontScaleChanged;
+    }
+
+    private void OnFontScaleChanged(object? sender, double scale)
+    {
+        MainThread.BeginInvokeOnMainThread(() => FontScalingHelper.ApplyScale(this, scale));
+    }
+
+    private void UpdateFlashUI()
+    {
+        if (_hardware.IsFlashOn)
+        {
+            FlashStatus.Text = "Flashlight is ON";
+            BtnFlash.Text = "Flash OFF";
+            BtnFlash.BackgroundColor = Colors.OrangeRed;
+        }
+        else
+        {
+            FlashStatus.Text = "Flashlight is OFF";
+            BtnFlash.Text = "Flash ON";
+            BtnFlash.BackgroundColor = (Color)Application.Current!.Resources["Primary"];
+        }
+    }
+
+    private async void OnToggleFlash(object? sender, EventArgs e)
+    {
         try
         {
-            FlashStatus.Text = _hardware.GetFlashStatus();
+            _hardware.TriggerHapticFeedback();
+            BtnFlash.IsEnabled = false;
+
+            var turnOn = !_hardware.IsFlashOn;
+            var (success, message) = await _hardware.ToggleFlashlightAsync(turnOn);
+
+            if (success)
+            {
+                UpdateFlashUI();
+                SemanticScreenReader.Announce(message);
+            }
+            else
+            {
+                await DisplayAlert("Flashlight", message, "OK");
+                FlashStatus.Text = message;
+            }
         }
         catch (Exception ex)
         {
-            FlashStatus.Text = $"Flash error: {ex.Message}";
+            await DisplayAlert("Flashlight Error", $"Could not control flashlight: {ex.Message}", "OK");
+        }
+        finally
+        {
+            BtnFlash.IsEnabled = true;
         }
     }
 
@@ -32,7 +86,6 @@ public partial class CameraPage : ContentPage
         {
             _hardware.TriggerHapticFeedback();
 
-            BtnFlash.IsEnabled = false;
             var result = await _hardware.TakePhotoAsync();
 
             if (result.StartsWith("/") || result.StartsWith("C:") || File.Exists(result))
@@ -49,10 +102,6 @@ public partial class CameraPage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Camera Error", $"Could not take photo: {ex.Message}", "OK");
-        }
-        finally
-        {
-            BtnFlash.IsEnabled = true;
         }
     }
 
@@ -77,22 +126,6 @@ public partial class CameraPage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Gallery Error", $"Could not pick photo: {ex.Message}", "OK");
-        }
-    }
-
-    private async void OnFlashStatus(object? sender, EventArgs e)
-    {
-        try
-        {
-            var status = _hardware.GetFlashStatus();
-            FlashStatus.Text = status;
-            _hardware.TriggerHapticFeedback();
-            await DisplayAlert("Flash Status", status, "OK");
-        }
-        catch (Exception ex)
-        {
-            FlashStatus.Text = $"Flash is not available";
-            await DisplayAlert("Flash Error", $"Flash is not supported on this device: {ex.Message}", "OK");
         }
     }
 }

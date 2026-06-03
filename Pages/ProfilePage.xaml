@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fooddrink.Pages.ProfilePage"
+             Title="Profile">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+
+            <!-- ====== Profile Header ====== -->
+            <Frame Padding="20" CornerRadius="16" HasShadow="True"
+                   BackgroundColor="{AppThemeBinding Light=#fff5f0, Dark=#2a1a10}">
+                <VerticalStackLayout Spacing="8" HorizontalOptions="Center">
+                    <!-- Avatar Circle -->
+                    <Frame WidthRequest="80" HeightRequest="80" CornerRadius="40" Padding="0"
+                           IsClippedToBounds="True" HorizontalOptions="Center"
+                           BackgroundColor="{AppThemeBinding Light={StaticResource Secondary}, Dark={StaticResource Tertiary}}">
+                        <Label Text="👤" FontSize="36" HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Frame>
+                    <Label x:Name="LblUserName" Text="Food Lover"
+                           FontSize="22" FontAttributes="Bold" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                    <Label x:Name="LblUserEmail" Text="foodlover@fooddrink.app"
+                           FontSize="13" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ====== Font Size Settings ====== -->
+            <Label Text="Display Settings"
+                   FontSize="18" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <Frame Padding="16" CornerRadius="12"
+                   BackgroundColor="{AppThemeBinding Light=#f8f8f8, Dark=#1f1f1f}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Font Size Adjustment"
+                           FontSize="15" FontAttributes="Bold"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                    <Label Text="Adjust the text size across the entire app for better readability."
+                           FontSize="12"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+
+                    <!-- Font scale slider -->
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                        <Label Grid.Column="0" Text="A" FontSize="12" VerticalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                        <Slider Grid.Column="1" x:Name="FontSlider"
+                                Minimum="0.8" Maximum="1.8" Value="1.0"
+                                ValueChanged="OnFontSliderChanged"
+                                SemanticProperties.Hint="Slide to adjust font size" />
+                        <Label Grid.Column="2" Text="A" FontSize="24" VerticalOptions="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Tertiary}, Dark=#ac99ea}" />
+                    </Grid>
+
+                    <Label x:Name="LblScaleValue" FontSize="13" HorizontalOptions="Center"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray300}}" />
+
+                    <!-- Preview Text -->
+                    <Frame Padding="12" CornerRadius="8"
+                           BackgroundColor="{AppThemeBinding Light=White, Dark=#2a2a2a}">
+                        <VerticalStackLayout Spacing="4">
+                            <Label Text="Preview" FontSize="11"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                            <Label x:Name="LblPreviewTitle" Text="The quick brown fox"
+                                   FontSize="16" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                            <Label x:Name="LblPreviewBody"
+                                   Text="This is how your food descriptions will look with the current font size setting. Peking Duck, crispy and golden."
+                                   FontSize="12"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Button Text="Reset to Default" Clicked="OnResetFont" HorizontalOptions="Center"
+                            BackgroundColor="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}"
+                            TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}"
+                            SemanticProperties.Hint="Reset font size to default" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ====== My Favorites ====== -->
+            <Label Text="My Favorites"
+                   FontSize="18" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <CollectionView x:Name="ProfileFavoritesCollection" HeightRequest="220"
+                            SemanticProperties.Description="Your favorite dishes">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,3" Padding="10" CornerRadius="8"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#2a2a2a}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnFavoriteTapped" CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="50,*" ColumnSpacing="10">
+                                <Frame Grid.Column="0" WidthRequest="50" HeightRequest="50"
+                                       CornerRadius="6" Padding="0" IsClippedToBounds="True"
+                                       BackgroundColor="{AppThemeBinding Light={StaticResource Gray100}, Dark={StaticResource Gray600}}">
+                                    <Image Source="{Binding ImageUrl}" Aspect="AspectFill" />
+                                </Frame>
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="1">
+                                    <Label Text="{Binding Name}" FontSize="14" FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                                    <Label Text="{Binding Category}" FontSize="11"
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                                </VerticalStackLayout>
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Frame Padding="16" CornerRadius="8" HasShadow="False"
+                           BackgroundColor="{AppThemeBinding Light=#f8f8f8, Dark=#1f1f1f}">
+                        <Label Text="No favorites yet. ♥ dishes from the detail page to see them here!"
+                               FontSize="12" HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    </Frame>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <!-- ====== Recently Viewed (JSON) ====== -->
+            <Label Text="Recently Viewed"
+                   FontSize="18" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <CollectionView x:Name="RecentViewsCollection" HeightRequest="180"
+                            SemanticProperties.Description="Recently viewed dishes">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame Margin="0,3" Padding="10" CornerRadius="8"
+                               BackgroundColor="{AppThemeBinding Light=White, Dark=#2a2a2a}">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer Tapped="OnRecentTapped" CommandParameter="{Binding .}" />
+                            </Frame.GestureRecognizers>
+                            <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                <VerticalStackLayout VerticalOptions="Center" Spacing="1">
+                                    <Label Text="{Binding FoodName}" FontSize="13" FontAttributes="Bold"
+                                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                                    <Label Text="{Binding ViewedAt, StringFormat='{0:yyyy-MM-dd HH:mm}'}"
+                                           FontSize="11"
+                                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="1" Text="📄 JSON" FontSize="10" VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                            </Grid>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+
+                <CollectionView.EmptyView>
+                    <Frame Padding="16" CornerRadius="8" HasShadow="False"
+                           BackgroundColor="{AppThemeBinding Light=#f8f8f8, Dark=#1f1f1f}">
+                        <Label Text="No recently viewed dishes. Open a dish detail page to record views here."
+                               FontSize="12" HorizontalTextAlignment="Center"
+                               TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    </Frame>
+                </CollectionView.EmptyView>
+            </CollectionView>
+
+            <!-- ====== Data Storage Methods ====== -->
+            <Label Text="Data Storage Methods"
+                   FontSize="18" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <Frame Padding="16" CornerRadius="12"
+                   BackgroundColor="{AppThemeBinding Light=#f8f8f8, Dark=#1f1f1f}">
+                <VerticalStackLayout Spacing="10">
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Label Text="🗄️" FontSize="20" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="1">
+                            <Label Text="SQLite Database" FontSize="14" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                            <Label Text="Stores 20 food items, favorites, and scan history with relational tables."
+                                   FontSize="11"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Label Text="⚙️" FontSize="20" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="1">
+                            <Label Text="Preferences (Key-Value)" FontSize="14" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                            <Label Text="Stores font scale setting as persistent key-value pair."
+                                   FontSize="11"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                        </VerticalStackLayout>
+                    </Grid>
+
+                    <BoxView HeightRequest="1" Color="{AppThemeBinding Light={StaticResource Gray200}, Dark={StaticResource Gray600}}" />
+
+                    <Grid ColumnDefinitions="Auto,*" ColumnSpacing="12">
+                        <Label Text="📄" FontSize="20" VerticalOptions="Center" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="1">
+                            <Label Text="JSON File Storage" FontSize="14" FontAttributes="Bold"
+                                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                            <Label x:Name="LblJsonPath" FontSize="11"
+                                   TextColor="{AppThemeBinding Light={StaticResource Gray500}, Dark={StaticResource Gray400}}" />
+                        </VerticalStackLayout>
+                    </Grid>
+                </VerticalStackLayout>
+            </Frame>
+
+            <!-- ====== App Info ====== -->
+            <Label Text="About"
+                   FontSize="18" FontAttributes="Bold"
+                   TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+            <Frame Padding="16" CornerRadius="12"
+                   BackgroundColor="{AppThemeBinding Light=#f8f8f8, Dark=#1f1f1f}">
+                <Grid RowDefinitions="Auto,Auto,Auto,Auto" ColumnDefinitions="*,Auto" RowSpacing="8">
+                    <Label Grid.Row="0" Text="App Name" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="Food &amp; Drink" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+                    <Label Grid.Row="1" Text="Version" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="1" Grid.Column="1" Text="1.0.0" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+                    <Label Grid.Row="2" Text="Framework" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="2" Grid.Column="1" Text=".NET MAUI 8" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+
+                    <Label Grid.Row="3" Text="Database" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Gray400}, Dark={StaticResource Gray300}}" />
+                    <Label Grid.Row="3" Grid.Column="1" Text="SQLite" FontSize="13"
+                           TextColor="{AppThemeBinding Light={StaticResource Black}, Dark={StaticResource White}}" />
+                </Grid>
+            </Frame>
+
+            <!-- ====== Bottom Spacer ====== -->
+            <BoxView HeightRequest="20" Color="Transparent" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

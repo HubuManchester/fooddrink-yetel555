@@ -3,8 +3,23 @@
   "WorkspaceRootPath": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|c:\\users\\asus\\desktop\\yi dong\\fooddrink\\services\\hardwareservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|solutionrelative:services\\hardwareservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|c:\\users\\asus\\desktop\\yi dong\\fooddrink\\services\\databaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|solutionrelative:services\\databaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|c:\\users\\asus\\desktop\\yi dong\\fooddrink\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|solutionrelative:readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|c:\\users\\asus\\desktop\\yi dong\\fooddrink\\fooddrink.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
       "RelativeMoniker": "D:0:0:{B71D1ADE-B443-4AB9-8AE4-68C6AA45E15B}|Fooddrink.csproj|solutionrelative:fooddrink.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ASUS\\.nuget\\packages\\communitytoolkit.maui\\9.0.3\\ReadMe.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -14,7 +29,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 5,
           "Children": [
             {
               "$type": "Bookmark",
@@ -25,29 +40,76 @@
               "Name": "ST:0:0:{1c64b9c2-e352-428e-a56d-0ace190b99a6}"
             },
             {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Fooddrink.csproj",
-              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Fooddrink.csproj",
-              "RelativeDocumentMoniker": "Fooddrink.csproj",
-              "ToolTip": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Fooddrink.csproj",
-              "RelativeToolTip": "Fooddrink.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAnAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2026-05-30T17:44:53.8Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
-            },
-            {
               "$type": "Bookmark",
               "Name": "ST:0:0:{40ea2e6b-2121-4bb8-a43e-c83c04b51041}"
             },
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{56df62a4-05a3-4e5b-aa1a-99371ccfb997}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "DatabaseService.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Services\\DatabaseService.cs",
+              "RelativeDocumentMoniker": "Services\\DatabaseService.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Services\\DatabaseService.cs",
+              "RelativeToolTip": "Services\\DatabaseService.cs",
+              "ViewState": "AgIAALAAAAAAAAAAAAAcwAwAAAA/AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T13:20:07.898Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HardwareService.cs",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Services\\HardwareService.cs",
+              "RelativeDocumentMoniker": "Services\\HardwareService.cs",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Services\\HardwareService.cs",
+              "RelativeToolTip": "Services\\HardwareService.cs",
+              "ViewState": "AgIAALoAAAAAAAAAAAAAAJEAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-05-31T12:46:02.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\README.md",
+              "RelativeDocumentMoniker": "README.md",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\README.md",
+              "RelativeToolTip": "README.md",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAE8AAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2026-05-31T11:49:33.344Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "ReadMe.txt",
+              "DocumentMoniker": "C:\\Users\\ASUS\\.nuget\\packages\\communitytoolkit.maui\\9.0.3\\ReadMe.txt",
+              "RelativeDocumentMoniker": "..\\..\\..\\.nuget\\packages\\communitytoolkit.maui\\9.0.3\\ReadMe.txt",
+              "ToolTip": "C:\\Users\\ASUS\\.nuget\\packages\\communitytoolkit.maui\\9.0.3\\ReadMe.txt",
+              "RelativeToolTip": "..\\..\\..\\.nuget\\packages\\communitytoolkit.maui\\9.0.3\\ReadMe.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2026-05-31T11:43:24.038Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Fooddrink.csproj",
+              "DocumentMoniker": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Fooddrink.csproj",
+              "RelativeDocumentMoniker": "Fooddrink.csproj",
+              "ToolTip": "C:\\Users\\ASUS\\Desktop\\yi dong\\Fooddrink\\Fooddrink.csproj",
+              "RelativeToolTip": "Fooddrink.csproj",
+              "ViewState": "AgIAACcAAAAAAAAAAAAAABkAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-05-30T17:44:53.8Z",
+              "EditorCaption": ""
             }
           ]
         }
